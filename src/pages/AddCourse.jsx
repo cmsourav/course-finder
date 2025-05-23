@@ -9,6 +9,7 @@ const AddCoursePage = () => {
     const [collegeId, setCollegeId] = useState("");
     const [showNewCollegeForm, setShowNewCollegeForm] = useState(false);
     const [courseName, setCourseName] = useState("");
+    const [showNewCourseInput, setShowNewCourseInput] = useState(false);
     const [courseDetails, setCourseDetails] = useState({
         duration: "",
         benefits: "",
@@ -31,9 +32,11 @@ const AddCoursePage = () => {
     // UI state
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [existingColleges, setExistingColleges] = useState([]);
+    const [existingCourses, setExistingCourses] = useState([]);
     const [loadingColleges, setLoadingColleges] = useState(true);
+    const [loadingCourses, setLoadingCourses] = useState(true);
 
-    // Fetch existing colleges
+    // Fetch existing colleges and courses
     useEffect(() => {
         const fetchColleges = async () => {
             try {
@@ -51,7 +54,27 @@ const AddCoursePage = () => {
             }
         };
 
+        const fetchCourses = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, "km-courses"));
+                const courses = [];
+                querySnapshot.forEach((doc) => {
+                    courses.push({ id: doc.id, ...doc.data() });
+                });
+                
+                // Get unique course names
+                const uniqueCourseNames = [...new Set(courses.map(course => course.name))];
+                setExistingCourses(uniqueCourseNames);
+            } catch (error) {
+                console.error("Error fetching courses:", error);
+                toast.error("Failed to load courses list");
+            } finally {
+                setLoadingCourses(false);
+            }
+        };
+
         fetchColleges();
+        fetchCourses();
     }, []);
 
     // Handle new college input changes
@@ -162,6 +185,16 @@ const AddCoursePage = () => {
                 eligibility: "",
                 placement: ""
             });
+            setShowNewCourseInput(false);
+            
+            // Refresh courses list
+            const querySnapshot = await getDocs(collection(db, "km-courses"));
+            const courses = [];
+            querySnapshot.forEach((doc) => {
+                courses.push({ id: doc.id, ...doc.data() });
+            });
+            const uniqueCourseNames = [...new Set(courses.map(course => course.name))];
+            setExistingCourses(uniqueCourseNames);
         } catch (error) {
             console.error("Firebase error:", error);
             toast.error(`Failed to create course. ${error.message}`);
@@ -178,12 +211,12 @@ const AddCoursePage = () => {
         }));
     };
 
-    if (loadingColleges) {
+    if (loadingColleges || loadingCourses) {
         return (
             <div className="add_course_container">
                 <div className="add_course_loading">
                     <div className="add_course_spinner"></div>
-                    <p>Loading colleges...</p>
+                    <p>Loading data...</p>
                 </div>
             </div>
         );
@@ -248,7 +281,7 @@ const AddCoursePage = () => {
                                     />
                                 </div>
                                 
-                                <div className="add_course_form_group">
+                                 <div className="add_course_form_group">
                                     <label htmlFor="affliatedTo" className="add_course_label">
                                         Affiliated To
                                     </label>
@@ -356,7 +389,7 @@ const AddCoursePage = () => {
                                         rows="3"
                                     ></textarea>
                                 </div>
-
+                                
                                 <div className="add_college_actions">
                                     <button
                                         type="button"
@@ -385,15 +418,57 @@ const AddCoursePage = () => {
                                 <label htmlFor="courseName" className="add_course_label">
                                     Course Name <span className="add_course_required">*</span>
                                 </label>
-                                <input
-                                    type="text"
-                                    id="courseName"
-                                    value={courseName}
-                                    onChange={(e) => setCourseName(e.target.value)}
-                                    placeholder="E.g., Computer Science Engineering"
-                                    className="add_course_input"
-                                    required
-                                />
+                                
+                                {!showNewCourseInput ? (
+                                    <>
+                                        <select
+                                            id="courseName"
+                                            value={courseName}
+                                            onChange={(e) => setCourseName(e.target.value)}
+                                            className="add_course_input"
+                                            required
+                                        >
+                                            <option value="">Select an existing course</option>
+                                            {existingCourses.map((course, index) => (
+                                                <option key={index} value={course}>
+                                                    {course}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <button
+                                            type="button"
+                                            className="add_college_toggle_btn"
+                                            onClick={() => {
+                                                setShowNewCourseInput(true);
+                                                setCourseName("");
+                                            }}
+                                        >
+                                            + Add New Course Name
+                                        </button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <input
+                                            type="text"
+                                            id="courseName"
+                                            value={courseName}
+                                            onChange={(e) => setCourseName(e.target.value)}
+                                            placeholder="E.g., Computer Science Engineering"
+                                            className="add_course_input"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            className="add_college_toggle_btn"
+                                            onClick={() => {
+                                                setShowNewCourseInput(false);
+                                                setCourseName("");
+                                            }}
+                                        >
+                                            ← Select from existing courses
+                                        </button>
+                                    </>
+                                )}
                             </div>
 
                             <div className="add_course_form_group">
