@@ -1,0 +1,219 @@
+/* styles/AddCourse.css */
+
+/* Base container styles */
+.add_course_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #f5f7fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Card styling */
+.add_course_card {
+  width: 100%;
+  max-width: 600px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Header section */
+.add_course_header {
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #4f6beb 0%, #3a56d0 100%);
+  color: white;
+}
+
+.add_course_title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.add_course_subtitle {
+  margin: 0.5rem 0 0;
+  opacity: 0.9;
+  font-size: 0.9rem;
+}
+
+/* Form styling */
+.add_course_form {
+  padding: 2rem;
+}
+
+.add_course_form_group {
+  margin-bottom: 1.25rem;
+}
+
+.add_course_label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #2d3748;
+}
+
+.add_course_required {
+  color: #e53e3e;
+  margin-left: 0.25rem;
+}
+
+.add_course_input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background-color: #f8fafc;
+}
+
+.add_course_input:focus {
+  outline: none;
+  border-color: #4f6beb;
+  box-shadow: 0 0 0 3px rgba(79, 107, 235, 0.2);
+  background-color: white;
+}
+
+/* Button styles */
+.add_course_submit_btn {
+  width: 100%;
+  padding: 0.875rem;
+  margin-top: 1rem;
+  background: linear-gradient(135deg, #4f6beb 0%, #3a56d0 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.add_course_submit_btn:hover {
+  background: linear-gradient(135deg, #3a56d0 0%, #2e49bb 100%);
+}
+
+.add_course_submit_btn:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+}
+
+/* Loading spinner */
+.add_course_spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* College toggle button */
+.add_college_toggle_btn {
+  background: none;
+  border: none;
+  color: #4f6beb;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0;
+  text-align: left;
+  transition: color 0.2s ease;
+}
+
+.add_college_toggle_btn:hover {
+  color: #3a56d0;
+  text-decoration: underline;
+}
+
+/* College creation form */
+.add_college_actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.add_college_primary_btn {
+  background: #4f6beb;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  flex: 1;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: background 0.2s ease;
+}
+
+.add_college_primary_btn:hover {
+  background: #3a56d0;
+}
+
+.add_college_primary_btn:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+}
+
+.add_college_secondary_btn {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  color: #4a5568;
+  cursor: pointer;
+  flex: 1;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.add_college_secondary_btn:hover {
+  background: #f7fafc;
+  border-color: #cbd5e0;
+}
+
+/* Loading state */
+.add_course_loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.add_course_loading p {
+  margin-top: 1rem;
+  color: #4a5568;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .add_course_container {
+    padding: 1rem;
+  }
+  
+  .add_course_card {
+    border-radius: 8px;
+  }
+  
+  .add_course_header {
+    padding: 1.25rem;
+  }
+  
+  .add_course_form {
+    padding: 1.5rem;
+  }
+}
